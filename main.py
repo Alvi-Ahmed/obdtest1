@@ -1,6 +1,9 @@
 import obd
 
-connection = obd.OBD() # auto-connects to USB or RF port
+connection = obd.OBD(protocol="7", baudrate="9600", fast=False)
+
+
+//connection = obd.OBD() # auto-connects to USB or RF port
 
 cmd = obd.commands.SPEED # select an OBD command (sensor)
 
