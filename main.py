@@ -4,7 +4,7 @@ import time
 # connection = obd.OBD(protocol="7", baudrate="9600", fast=False)
 #connection = obd.OBD(baudrate=38400, fast=False)
 #connection = obd.OBD() # auto-connects to USB or RF port
-connection = obd.OBD("/dev/pts/1")
+connection = obd.OBD("/dev/pts/2")
 
 
 r= connection.status()
