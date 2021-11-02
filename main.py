@@ -1,6 +1,21 @@
 import obd
 import time
+import firebase_admin
+from firebase_admin import credentials, initialize_app
+from firebase_admin import db
 
+cred=credentials.Certificate('ServiceAccountKey.json')
+
+firebase_admin.initialize_app(cred,{
+    'databaseURL':'https://driver-analysis-273c5-default-rtdb.firebaseio.com/'
+})
+ref=db.reference('py/')
+
+data_ref=ref.child('data_collection')
+
+data_ref.set({
+    'speed': '180'
+})
 # connection = obd.OBD(protocol="7", baudrate="9600", fast=False)
 #connection = obd.OBD(baudrate=38400, fast=False)
 #connection = obd.OBD() # auto-connects to USB or RF port
