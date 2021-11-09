@@ -1,0 +1,5 @@
+2021-11-09 22:19:17,329  root       get_pty    DEBUG    Pty name: /dev/pts/1
+2021-11-09 22:19:17,330  root       run        INFO     
+
+ELM327 OBD-II adapter emulator v3.0.0 started on pseudo-tty port "/dev/pts/1".
+
