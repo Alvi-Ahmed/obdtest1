@@ -26,7 +26,7 @@ data_ref=ref.child(dt_string)
 # connection = obd.OBD(protocol="7", baudrate="9600", fast=False)
 #connection = obd.OBD(baudrate=38400, fast=False)
 #connection = obd.OBD() # auto-connects to USB or RF port
-connection = obd.OBD("/dev/pts/3")
+connection = obd.OBD("/dev/pts/2")
 
 
 r= connection.status()
@@ -35,11 +35,11 @@ a=0
 i=1
 infdriving = False
 reckless= True
-with open('data.csv','a',newline='') as csvfile:
-    fieldnames = ['speed','coolent']
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    writer.writeheader()
-    csvfile.close()    
+# with open('data.csv','a',newline='') as csvfile:
+#     fieldnames = ['speed','coolent']
+#    # writer = csv.DictWrite(csvfile)
+#     writer.writeheader()
+#     csvfile.close()    
 while (a<100):
     cmd = obd.commands.SPEED # select an OBD command (sensor)
     cmd3 = obd.commands.RPM
@@ -61,14 +61,22 @@ while (a<100):
     response2 = connection.query(cmd2) # send the command, and parse the response
     print(response2.value)
     response = connection.query(cmd) # send the command, and parse the response
+    ref=db.reference('py/')
+    now=datetime.now()
+
+    dt_string = now.strftime('%d-%m-%Y %H-%M-%S')
+# dtime=str(today)
+    print(dt_string)
+
     #time.sleep(0.5)
     x = str(response.value)
     print(x)
     a=a+1
     with open('data.csv','a',newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerow({'speed':response,'coolent':response2})
+        writer = csv.writer(csvfile)
+       # writer.writeheader()
+        data=[dt_string,response,response2]
+        writer.writerow(data)
         csvfile.close() 
 
  
