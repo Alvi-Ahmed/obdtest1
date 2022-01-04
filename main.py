@@ -3,17 +3,93 @@ import obd
 import time
 from datetime import datetime
 import firebase_admin
-from firebase_admin import credentials, initialize_app
+from firebase_admin import credentials, initialize_app, firestore
+
 from firebase_admin import db
+import google.cloud
+
 import csv
 
 cred=credentials.Certificate('ServiceAccountKey.json')
 
 firebase_admin.initialize_app(cred,{
-    'databaseURL':'https://driver-analysis-273c5-default-rtdb.firebaseio.com/'
+    'databaseURL':'https://sampledatabasedevexpert.firebaseio.com/'
 })
+store = firestore.client()
 ref=db.reference('py/')
 now=datetime.now()
+
+file_path = "take1.csv"
+
+collection_name = "newData"
+
+
+
+
+
+def batch_data(iterable, n=1):
+
+    l = len(iterable)
+
+    for ndx in range(0, l, n):
+
+        yield iterable[ndx:min(ndx + n, l)]
+
+
+
+
+
+data = []
+
+headers = []
+
+with open(file_path) as csv_file:
+
+    csv_reader = csv.reader(csv_file, delimiter=',')
+
+    line_count = 0
+
+    for row in csv_reader:
+
+        if line_count == 0:
+
+            for header in row:
+
+                headers.append(header)
+
+            line_count += 1
+
+        else:
+
+            obj = {}
+
+            for idx, item in enumerate(row):
+
+                obj[headers[idx]] = item
+
+            data.append(obj)
+
+            line_count += 1
+
+    print(f'Processed {line_count} lines.')
+
+
+
+for batched_data in batch_data(data, 499):
+
+    batch = store.batch()
+
+    for data_item in batched_data:
+
+        doc_ref = store.collection(collection_name).document()
+
+        batch.set(doc_ref, data_item)
+
+    batch.commit()
+
+
+
+print('Done')
 
 dt_string = now.strftime('%d-%m-%Y %H-%M-%S')
 # dtime=str(today)
