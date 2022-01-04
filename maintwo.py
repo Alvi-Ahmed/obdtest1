@@ -40,6 +40,10 @@ reckless= True
 #    # writer = csv.DictWrite(csvfile)
 #     writer.writeheader()
 #     csvfile.close()    
+with open('data.csv','a',newline='') as csvfile:
+        pitter = csv.DictWriter(csvfile, fieldnames=["a","b","c"])
+        pitter.writeheader()
+        csvfile.close
 while (a<100):
     cmd = obd.commands.SPEED # select an OBD command (sensor)
     cmd3 = obd.commands.RPM
@@ -73,8 +77,8 @@ while (a<100):
     print(x)
     a=a+1
     with open('data.csv','a',newline='') as csvfile:
-        pitter = csv.DictWriter(csvfile, fieldnames=["a","b","c"])
-        pitter.writeheader()
+        # pitter = csv.DictWriter(csvfile, fieldnames=["a","b","c"])
+        # pitter.writeheader()
         writer = csv.writer(csvfile)
        # writer.writeheader()
         data=[dt_string,response,response2]
